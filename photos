@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>永轩家具城电子图册</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<h1>永轩家具城电子图册</h1>
+<p>家居美学 · 品质生活</p>
+</header>
+
+<div class="hero">
+<img src="images/home/home.jpg" onerror="this.style.display='none'">
+</div>
+
+<div id="app"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Microsoft YaHei",Arial,sans-serif;background:#f7f4ef;color:#333}
+header{text-align:center;padding:35px;background:#fff}
+header h1{font-size:38px;margin:0 0 10px;font-weight:500}
+header p{font-size:18px;color:#777}
+.hero{width:90%;height:350px;margin:30px auto;background:#eee;display:flex;justify-content:center;align-items:center;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover}
+.container{width:90%;margin:auto}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
+.card{background:#fff;padding:30px;text-align:center;border-radius:8px;cursor:pointer;box-shadow:0 5px 15px #ddd}
+.card:hover{transform:translateY(-5px)}
+button{margin:20px;padding:10px 25px;border:0;background:#333;color:#fff;border-radius:5px}
+.gallery img{width:220px;height:220px;object-fit:cover;background:#eee;margin:10px}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}}
+
+
+/* ===== 手机端响应式优化 ===== */
+@media (max-width: 800px){
+
+    body{
+        overflow-x:hidden;
+    }
+
+    header{
+        padding:20px 15px;
+    }
+
+    header h1{
+        font-size:26px;
+        line-height:1.4;
+    }
+
+    header p{
+        font-size:14px;
+    }
+
+    .hero{
+        width:100%;
+        height:auto;
+        min-height:220px;
+        margin:15px auto;
+    }
+
+    .hero img{
+        height:auto;
+        min-height:220px;
+        object-fit:cover;
+    }
+
+    .container{
+        width:94%;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .card{
+        padding:18px;
+        border-radius:6px;
+    }
+
+    button{
+        width:90%;
+        margin:15px auto;
+        display:block;
+    }
+
+    .gallery{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .gallery img{
+        width:45%;
+        height:auto;
+        aspect-ratio:1/1;
+        margin:5px;
+    }
+}
+
+
+/* 平板优化 */
+@media (min-width:801px) and (max-width:1100px){
+
+    .grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .hero{
+        height:300px;
+    }
+const data={
+"客厅空间":["沙发","电视柜","茶几","边几","玄关柜","装饰柜","博古架","隔断柜","斗柜","鞋柜","换鞋凳","落地衣帽架"],
+"餐厅空间":["长方形餐桌","圆形餐桌","餐椅","餐边柜","酒柜"],
+"卧室空间":["实木床","软包床","床垫","床头柜","梳妆台","衣柜","折叠沙发床","上下铺","单人床"],
+"书房 / 办公空间":["书桌","电脑桌","书柜","书架","办公椅","文件柜","阅读躺椅"],
+"阳台空间":["阳台茶桌椅","休闲吊椅","藤椅","单人沙发"]
+};
+
+const app=document.getElementById("app");
+
+function showHome(){
+let html='<div class="container"><h2>家具空间分类</h2><div class="grid">';
+Object.keys(data).forEach(x=>{
+html+=`<div class="card" onclick="showCategory('${x}')">${x}</div>`;
+});
+html+='</div></div>';
+app.innerHTML=html;
+}
+
+function showCategory(name){
+let html=`<div class="container"><button onclick="showHome()">返回首页</button><h2>${name}</h2><div class="grid">`;
+data[name].forEach(x=>{
+html+=`<div class="card" onclick="showProducts('${name}','${x}')">${x}</div>`;
+});
+html+='</div></div>';
+app.innerHTML=html;
+}
+
+function showProducts(space,type){
+let folder=`images/${space}/${type}/`;
+let html=`<div class="container"><button onclick="showCategory('${space}')">返回分类</button><h2>${type}</h2><div class="gallery">`;
+for(let i=1;i<=20;i++){
+html+=`<img src="${folder}${i}.jpg" onerror="this.style.display='none'">`;
+}
+html+='</div></div>';
+app.innerHTML=html;
+}
+
+showHome();
+
+}
